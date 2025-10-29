@@ -4,7 +4,7 @@ import requireAuth from '../middleware/authMiddleware.js';
 import upload from '../config/cloudinaryConfig.js';
 
 const router = express.Router();
-
+// Routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/me', requireAuth, getUserInfo);
