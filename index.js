@@ -39,17 +39,13 @@ app.use("/uploads", express.static("uploads"));
 
 
 // MongoDB connection
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URL, {
-    });
-    console.log("✅ MongoDB Connected Successfully");
-  } catch (error) {
-    console.error("❌ MongoDB Connection Failed:", error.message);
-  }
-};
+const uri = process.env.MONGO_URI; 
 
-connectDB();
+mongoose
+  .connect(uri)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.error("MongoDB Connection Failed:", err));
+
 
 
 app.listen(process.env.PORT || 4000, () => {
