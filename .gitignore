@@ -10,7 +10,7 @@ logs
 npm-debug.log*
 
 # Build and cache files
-dist/
+dist/ 
 build/
 .cache/
 
