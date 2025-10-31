@@ -7,13 +7,13 @@ const addIncome = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        const {icon, amount, source, date} = req.body;
-        if(!amount || !source || !date || !icon){
+        const {title, amount, source, date} = req.body;
+        if(!title ||!amount || !source || !date ){
             return res.status(400).json({ message: "All fields are required" });
         }
         const newIncome = new Income({
             userId,
-            icon,
+            title,
             amount,
             source,
             date

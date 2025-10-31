@@ -1,95 +1,128 @@
-import User from '../models/Auth.js';
-import jwt from 'jsonwebtoken';
+// Load environment variables first
 import dotenv from "dotenv";
 dotenv.config();
 
-//Generate JWT Token
-const generateToken = (user) => {
+import express from "express";
+import jwt from "jsonwebtoken";
+import User from "../models/Auth.js"; //  Make sure path is correct
+import requireAuth from "../middleware/authMiddleware.js";
+
+const router = express.Router();
+
+//  Generate JWT Token
+const generateToken = (userId) => {
   return jwt.sign(
-    { id: user._id },
+    { id: userId },
     process.env.JWT_SECRET,
-    { expiresIn: '1h' }
+    { expiresIn: "1h" }
   );
-}
+};
 
-// Register User
-const registerUser = async (req, res) => {
-  const {fullName, email, password, profileImageUrl} = req.body;
+//  Register User
+router.post("/signup", async (req, res) => {
+  const { fullName, email, password, profileImageUrl } = req.body;
 
-  //validation
-  if(!fullName || !email || !password){
-    return res.status(400).json({message: "Please fill all required fields"});
+  //  Validation
+  if (!fullName || !email || !password) {
+    return res.status(400).json({ message: "Please fill all required fields" });
   }
 
   try {
-    //check if user already exists
-    const existingUser = await User.findOne({email});
-    if(existingUser){
-      return res.status(400).json({message: "User already exists"});
-    } 
+    //  Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-    //create new user
-    const user = await User.create({
+    // Create new user
+    const newUser = new User({
       fullName,
       email,
       password,
-      profileImageUrl
+      profileImageUrl,
     });
+
+    await newUser.save();
+
+    // Generate Token
+    const token = generateToken(newUser._id);
+
+    // ✅ Send success response
     res.status(201).json({
-      message: "User registered successfully",
-      id: user._id,
-      user,
-      token: generateToken(user._id)
+      message: "Signup successful",
+      user: {
+        id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email,
+        profileImageUrl: newUser.profileImageUrl,
+      },
+      token,
     });
   } catch (error) {
-    console.error("Error registering user:", error);
-    res.status(500).json({ message: "Error registering user" });
+    console.error(" Error registering user:", error);
+    res.status(500).json({ message: "Signup failed" });
   }
-};
+});
 
-// Login User
-const loginUser = async (req, res) => {
-  const {email, password} = req.body;
+//  Login User
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
-  //validation
-  if(!email || !password){
-    return res.status(400).json({message: "Please fill all required fields"});
+  //  Validation
+  if (!email || !password) {
+    return res.status(400).json({ message: "Please fill all required fields" });
   }
 
-  try{
-    //check if user exists
-    const user = await User.findOne({email});
-    if(!user){
-      return  res.status(400).json({message: "Invalid email or password"});
-    } 
+  try {
+    //  Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    //  Check password (ensure your User model has comparePassword method)
+    const isPasswordValid = await user.comparePassword(password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    //  Generate Token
+    const token = generateToken(user._id);
 
     res.status(200).json({
-      message: "User logged in successfully",
-      id: user._id,
-      user,
-      token: generateToken(user)
+      message: "Login successful",
+      user: {
+        id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        profileImageUrl: user.profileImageUrl,
+      },
+      token,
     });
-  } catch (error) {
-    console.error("Error logging in user:", error);
-    res.status(500).json({ message: "Error logging in user" });
+  } catch (err) {
+    console.error(" Error during login:", err);
+    res.status(500).json({ message: "Login failed" });
   }
-};
+});
 
-// Get User Info
-const getUserInfo = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password');
+//  Get User Info
+router.get("/getUser" ,requireAuth, async (req, res) => {
+ try {
+
+console.log("Decoded user:", req.user);
+
+  if (!req.user || !req.user._id) {
+      return res.status(400).json({ message: "User ID not found in token" });
+    }
+
+    const user = await User.findById(req.user.id).select("fullName profileImageUrl");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({
-      message: "User information retrieved successfully",
-      user
-    });
+    res.json({ user });
   } catch (error) {
-      console.error("Error registering user:", error);
-    res.status(500).json({ message: "Error registering user" });
+    res.status(500).json({ message: "Error fetching user", error });
   }
-};
+});
 
-export {registerUser, loginUser, getUserInfo};
+export default router;

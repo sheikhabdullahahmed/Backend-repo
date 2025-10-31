@@ -7,13 +7,13 @@ const addExpense = async (req, res) => {
     const userId = req.user.id;
 
     try {
-        const {icon, amount, category, date} = req.body;
-        if(!amount || !category || !date || !icon){
+        const {title,  amount, category, date} = req.body;
+        if(!title || !amount || !category || !date ){
             return res.status(400).json({ message: "All fields are required" });
         }
         const newExpense = new Expense({
             userId,
-            icon,
+            title,
             amount,
             category,
             date
@@ -58,7 +58,6 @@ const downloadExpenseExcel = async (req, res) => {
         const expenses = await Expense.find({ userId }).sort({ date: -1 });
         // Prepare data for Excel
         const data = expenses.map(item => ({
-            Icon: item.icon,
             Amount: item.amount,
             Category: item.category,
             Date: item.date,

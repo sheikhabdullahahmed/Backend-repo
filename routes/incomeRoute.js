@@ -4,9 +4,9 @@ import requireAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/', requireAuth, addIncome);
+router.post('/', requireAuth,  addIncome);
 router.get('/', requireAuth, getAllIncomes);
-router.delete('/:id', requireAuth, deleteIncome);
-router.get('/download', requireAuth, downloadIncomeExcel);
+router.delete('/:id',  deleteIncome);
+router.get('/download', downloadIncomeExcel);
 
 export default router;
