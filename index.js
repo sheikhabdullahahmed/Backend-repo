@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutess from './controller/authController.js'
-// import uploadRoute from './routes/authRoute.js'
+import uploadRoute from './routes/authRoute.js'
 import serverless from "serverless-http";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,13 +32,13 @@ app.use(express.urlencoded({ extended: true }));
 
 //Routes
 app.use('/', authRoutess);
-// app.use('/upload', uploadRoute);
+app.use('/upload', uploadRoute);
 app.use('/income', incomeRoutes);
 app.use('/expense', expenseRoutes);
 
 // Static folder for uploads
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use("/uploads", express.static("uploads"));
+// app.use("/uploads", express.static("uploads"));
 
 
 
