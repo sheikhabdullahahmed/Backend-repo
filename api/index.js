@@ -16,7 +16,8 @@ const __dirname = path.dirname(__filename);
 
 
 const app = express();
-// export const handler = serverless(app);
+
+export const handler = serverless(app);
 
 // export const handler = serverless(app);
 
@@ -49,9 +50,9 @@ mongoose.connect(process.env.DATABASE_URL)
   .catch(err => console.log("MongoDB Connection Failed:", err));
 
 
-app.listen(process.env.PORT || 4000, () => {
-  console.log(`🟡 Server running on port ${process.env.PORT || 4000}`);
-});
+// app.listen(process.env.PORT || 4000, () => {
+//   console.log(`🟡 Server running on port ${process.env.PORT || 4000}`);
+// });
 
 
 
