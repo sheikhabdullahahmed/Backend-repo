@@ -1,13 +1,13 @@
 dotenv.config();
 import incomeRoutes from '../routes/incomeRoute.js';
-import expenseRoutes from './routes/expenseRoute.js';
+import expenseRoutes from '../routes/expenseRoute.js';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
-import authRoutess from '../controller/authController.js'
+import authRoutess from '../routes/authRoute.js'
 import uploadRoute from '../routes/authRoute.js'
 import serverless from "serverless-http";
 
