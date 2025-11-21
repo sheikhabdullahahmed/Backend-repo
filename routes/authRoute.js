@@ -1,5 +1,7 @@
 import express from 'express';
-import upload from '../config/cloudinaryConfig.js';
+// import upload from '../config/cloudinaryConfig.js';
+import upload from '../config/cloudinaryConfig.js'; // ✔ correct
+
 
 const router = express.Router();
 // Routes

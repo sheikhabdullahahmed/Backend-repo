@@ -1,5 +1,6 @@
 import express from 'express';
-import { addExpense, getAllExpenses, deleteExpense, downloadExpenseExcel } from '../controller/expenseController.js';
+// import { addExpense, getAllExpenses, deleteExpense, downloadExpenseExcel } from '../controller/expenseController.js';
+import { addExpense } from '../controller/expenseController.js'; 
 import requireAuth from '../middleware/authMiddleware.js';
 
 const router = express.Router();
