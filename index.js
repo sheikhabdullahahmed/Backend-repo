@@ -5,7 +5,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from "dotenv";
-// import path from "path";
+import path from "path";
 import { fileURLToPath } from "url";
 import authRoutess from './controller/authController.js'
 import uploadRoute from './routes/authRoute.js'
