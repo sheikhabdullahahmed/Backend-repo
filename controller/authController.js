@@ -45,7 +45,7 @@ router.post("/signup", async (req, res) => {
     await newUser.save();
 
     // Generate Token
-    const token = generateToken(newUser._id);
+    // const token = generateToken(newUser._id);
 
     // ✅ Send success response
     res.status(201).json({
@@ -56,7 +56,7 @@ router.post("/signup", async (req, res) => {
         email: newUser.email,
         profileImageUrl: newUser.profileImageUrl,
       },
-      token,
+      // token,
     });
   } catch (error) {
     console.error(" Error registering user:", error);
@@ -93,11 +93,10 @@ router.post("/login", async (req, res) => {
       message: "Login successful",
       user: {
         id: user._id,
-        fullName: user.fullName,
         email: user.email,
-        profileImageUrl: user.profileImageUrl,
       },
       token,
+
     });
   } catch (err) {
     console.error(" Error during login:", err);
@@ -109,7 +108,7 @@ router.post("/login", async (req, res) => {
 router.get("/getUser" ,requireAuth, async (req, res) => {
  try {
 
-console.log("Decoded user:", req.user);
+// console.log("Decoded user:", req.user);
 
   if (!req.user || !req.user._id) {
       return res.status(400).json({ message: "User ID not found in token" });
@@ -123,6 +122,11 @@ console.log("Decoded user:", req.user);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user", error });
   }
+});
+
+
+router.post("/logout", (req, res) => {
+  res.status(200).json({ message: "Logged out successfully" });
 });
 
 export default router;

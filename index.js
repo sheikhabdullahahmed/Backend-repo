@@ -38,14 +38,19 @@ app.use('/expense', expenseRoutes);
 app.use("/uploads", express.static("uploads"));
 
 
+
 // MongoDB connection
-const uri = process.env.MONGO_URI; 
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.DATABASE_URL, {
+    });
+    console.log("✅ MongoDB Connected Successfully");
+  } catch (error) {
+    console.error("❌ MongoDB Connection Failed:", error.message);
+  }
+};
 
-mongoose
-  .connect(uri)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB Connection Failed:", err));
-
+connectDB();
 
 
 app.listen(process.env.PORT || 4000, () => {
