@@ -18,6 +18,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 // export const handler = serverless(app);
 
+export const handler = serverless(app);
 
 // Middleware
 app.use(cors({
@@ -54,4 +55,3 @@ mongoose.connect(process.env.DATABASE_URL)
 
 
 
-export const handler = serverless(app);
