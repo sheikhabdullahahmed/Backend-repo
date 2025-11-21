@@ -5,13 +5,13 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from "dotenv";
-import path from "path";
+// import path from "path";
 import { fileURLToPath } from "url";
 import authRoutess from './controller/authController.js'
 import uploadRoute from './routes/authRoute.js'
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __dirname = path.dirname(__filename);
 
 
 const app = express();
@@ -40,17 +40,9 @@ app.use("/uploads", express.static("uploads"));
 
 
 // MongoDB connection
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URL, {
-    });
-    console.log("✅ MongoDB Connected Successfully");
-  } catch (error) {
-    console.error("❌ MongoDB Connection Failed:", error.message);
-  }
-};
-
-connectDB();
+mongoose.connect(process.env.DATABASE_URL)
+  .then(() => console.log("Connected"))
+  .catch(err => console.log("MongoDB Connection Failed:", err));
 
 
 app.listen(process.env.PORT || 4000, () => {
