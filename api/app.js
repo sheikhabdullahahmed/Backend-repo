@@ -62,7 +62,6 @@
 
 
 
-
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -77,7 +76,13 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({ origin: "*" }));
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -90,4 +95,7 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log("DB Error:", err));
 
-export const handler = serverless(app);
+const handler = serverless(app);
+
+// IMPORTANT: Vercel requires DEFAULT EXPORT
+export default handler;
