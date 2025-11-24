@@ -93,8 +93,10 @@ app.use("/expense", expenseRoutes);
 mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("DB Error:", err));
+  .catch((err) => console.log("DB Error:", err)); 
+  
 
+  // good 
 const handler = serverless(app);
 
 // IMPORTANT: Vercel requires DEFAULT EXPORT
