@@ -12,13 +12,7 @@ dotenv.config();
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
-
+app.use(cors({ origin: "*", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,13 +20,22 @@ app.use("/auth", authRoutes);
 app.use("/income", incomeRoutes);
 app.use("/expense", expenseRoutes);
 
-mongoose
-  .connect(process.env.DATABASE_URL)
-  .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log("DB Error:", err));
+// MongoDB Connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("MongoDB Connected");
+  } catch (err) {
+    console.log("DB Error:", err);
+  }
+};
 
-// good
+// Call connection immediately
+connectDB();
+
+// Serverless handler
 const handler = serverless(app);
-
-// IMPORTANT: Vercel requires DEFAULT EXPORT
 export default handler;
