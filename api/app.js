@@ -39,3 +39,4 @@ connectDB();
 // Serverless handler
 const handler = serverless(app);
 export default handler;
+  
