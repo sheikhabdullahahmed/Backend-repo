@@ -2,13 +2,13 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import serverless from "serverless-http";
+// import serverless from "serverless-http";
 
 import authRoutes from "./routes/authRoute.js";
 import incomeRoutes from "./routes/incomeRoute.js";
 import expenseRoutes from "./routes/expenseRoute.js";
-
 dotenv.config();
+
 
 const app = express();
 
@@ -36,7 +36,11 @@ const connectDB = async () => {
 // Call connection immediately
 connectDB();
 
+
+app.listen(5000, () => console.log("server running"));
+
+
 // Serverless handler
-const handler = serverless(app);
-export default handler;
+// const handler = serverless(app);
+// export default handler;
   
