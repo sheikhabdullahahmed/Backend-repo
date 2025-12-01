@@ -4,9 +4,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import serverless from "serverless-http";
 
-import authRoutes from "../routes/authRoute.js";
-import incomeRoutes from "../routes/incomeRoute.js";
-import expenseRoutes from "../routes/expenseRoute.js";
+import authRoutes from "./routes/authRoute.js";
+import incomeRoutes from "./routes/incomeRoute.js";
+import expenseRoutes from "./routes/expenseRoute.js";
 
 dotenv.config();
 
